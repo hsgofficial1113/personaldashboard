@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dula's Personal Space</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+<style>
         /* --- VISUALS --- */
         :root {
             --glass: rgba(255, 255, 255, 0.4);
@@ -22,95 +22,106 @@
 
         /* --- LOGIN SCREEN --- */
         #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-gradient); display: flex; justify-content: center; align-items: center; z-index: 5000; }
-        .login-box { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(15px); padding: 40px; border-radius: 20px; text-align: center; width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
+        .login-box { background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(15px); padding: 30px; border-radius: 20px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
         .login-input { width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 10px; background: rgba(255,255,255,0.8); outline: none; box-sizing: border-box;}
         .login-btn { width: 100%; padding: 12px; background: var(--primary-color); color: white; border: none; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold; transition: 0.2s; }
-        .login-btn:hover { transform: scale(1.05); }
 
         /* --- APP CONTAINER --- */
         #app-container { display: none; width: 100%; height: 100%; display: flex; }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (DESKTOP DEFAULT) --- */
         .sidebar { width: 80px; background: var(--glass); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; padding-top: 20px; border-right: 1px solid rgba(255,255,255,0.3); z-index: 10; justify-content: space-between; padding-bottom: 20px;}
         .nav-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .nav-btn { background: none; border: none; color: white; font-size: 1.5rem; margin: 15px 0; cursor: pointer; transition: 0.3s; opacity: 0.7; position: relative; }
         .nav-btn:hover, .nav-btn.active { opacity: 1; transform: scale(1.2); color: white; text-shadow: 0 0 10px rgba(255,255,255,0.8); }
-        
         .nav-btn::after { content: attr(data-tooltip); position: absolute; left: 70px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.7); color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; display: none; white-space: nowrap; pointer-events: none; z-index: 100;}
         .nav-btn:hover::after { display: block; }
 
         /* --- CONTENT --- */
         .content { flex: 1; padding: 30px; overflow-y: auto; scroll-behavior: smooth; position: relative; }
-        .section { display: none; animation: fadeIn 0.5s ease; }
+        .section { display: none; animation: fadeIn 0.5s ease; padding-bottom: 80px; /* Space for mobile nav */ }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(15px); border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .card { background: rgba(255, 255, 255, 0.55); backdrop-filter: blur(15px); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); }
 
-        /* --- WIDGETS --- */
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media(max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
-        .big-clock { font-size: 2.5rem; font-weight: bold; color: var(--primary-color); margin: 0; }
-        .weather-widget { display: flex; align-items: center; justify-content: space-between; }
-        
-        /* Weather Tip Box */
-        .weather-tip-box {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: bold;
-            display: none; /* Hidden by default */
-            text-align: center;
+        /* --- MOBILE OPTIMIZATION --- */
+        @media (max-width: 768px) {
+            #app-container { flex-direction: column; }
+            .sidebar { 
+                width: 100%; height: 70px; flex-direction: row; position: fixed; bottom: 0; left: 0; 
+                border-right: none; border-top: 1px solid rgba(255,255,255,0.4); 
+                padding: 0; justify-content: space-around; background: rgba(255, 255, 255, 0.85);
+            }
+            .nav-group { flex-direction: row; width: auto; gap: 15px; }
+            .nav-btn { color: var(--primary-color); font-size: 1.4rem; margin: 0; }
+            .nav-btn::after { display: none !important; } /* Hide tooltips on phone */
+            .content { padding: 20px; padding-bottom: 90px; } /* Prevent content hiding behind bar */
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .games-area { grid-template-columns: 1fr; }
+            .comfort-grid { grid-template-columns: 1fr; }
+            .big-clock { font-size: 2rem; }
         }
 
-        /* --- DIARY CSS --- */
-        .diary-entry { background: rgba(255,255,255,0.8); padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--primary-color); position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        /* --- WIDGETS & TOOLS --- */
+        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .big-clock { font-size: 2.5rem; font-weight: bold; color: var(--primary-color); margin: 0; }
+        .weather-widget { display: flex; align-items: center; justify-content: space-between; }
+        .weather-tip-box { margin-top: 15px; padding: 10px; border-radius: 10px; font-weight: bold; display: none; text-align: center; }
+
+        /* --- DIARY --- */
+        .diary-entry { background: rgba(255,255,255,0.8); padding: 15px; border-radius: 10px; margin-bottom: 15px; border-left: 4px solid var(--primary-color); position: relative; }
         .diary-date { font-size: 0.8rem; color: #666; font-weight: bold; margin-bottom: 5px; }
         .diary-img { max-width: 100%; border-radius: 10px; margin-top: 10px; display: block; }
         .delete-btn { position: absolute; top: 10px; right: 10px; color: #ff7675; cursor: pointer; background: none; border: none; }
         
-        /* --- AI CHAT CSS --- */
-        .chat-container { height: 400px; display: flex; flex-direction: column; background: rgba(255,255,255,0.5); border-radius: 15px; padding: 15px; }
+        /* --- CHAT --- */
+        .chat-container { height: 350px; display: flex; flex-direction: column; background: rgba(255,255,255,0.5); border-radius: 15px; padding: 15px; }
         .chat-box { flex: 1; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 10px; }
         .msg { padding: 10px 15px; border-radius: 15px; max-width: 80%; line-height: 1.4; font-size: 0.9rem; }
         .msg.user { align-self: flex-end; background: var(--primary-color); color: white; }
         .msg.ai { align-self: flex-start; background: white; color: #333; border: 1px solid rgba(0,0,0,0.1); }
         .chat-input-area { display: flex; gap: 10px; }
 
-        /* --- WHEEL CSS --- */
-        .wheel-wrapper { position: relative; width: 300px; height: 300px; margin: 0 auto; z-index: 100; }
+        /* --- WHEEL --- */
+        .wheel-wrapper { position: relative; width: 280px; height: 280px; margin: 0 auto; z-index: 100; }
         .wheel { width: 100%; height: 100%; border-radius: 50%; border: 8px solid white; transition: transform 4s cubic-bezier(0.17, 0.67, 0.83, 0.67); background: conic-gradient(#ff9ff3 0deg 60deg, #feca57 60deg 120deg, #ff6b6b 120deg 180deg, #48dbfb 180deg 240deg, #1dd1a1 240deg 300deg, #5f27cd 300deg 360deg); box-shadow: 0 0 20px rgba(0,0,0,0.2); }
-        .arrow { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 40px solid #333; z-index: 110; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); }
+        .arrow { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 40px solid #333; z-index: 110; }
 
-        /* --- BREATHING OVERLAY --- */
+        /* --- GAMES --- */
+        .games-area { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
+        .game-btn { font-size: 2rem; background: rgba(255,255,255,0.7); border: none; border-radius: 10px; padding: 10px; cursor: pointer; transition: 0.2s; }
+        .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; width: 150px; margin: 10px auto; }
+        .ttt-cell { width: 45px; height: 45px; background: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; cursor: pointer; border-radius: 5px; }
+
+        /* --- COMFORT --- */
         #breathing-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); z-index: 4000; display: none; flex-direction: column; justify-content: center; align-items: center; color: white;}
         .breathing-circle { width: 200px; height: 200px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; font-weight: bold; transition: all 4s ease-in-out; border: 5px solid white; box-shadow: 0 0 30px rgba(255,255,255,0.3);}
         .breathing-circle.inhale { transform: scale(1.6); }
         .breathing-circle.hold { transform: scale(1.6); border-color: #fab1a0;}
         .breathing-circle.exhale { transform: scale(1); }
         
-        /* --- COMFORT LINKS --- */
         .comfort-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
         .comfort-link { background: white; padding: 15px; border-radius: 10px; text-decoration: none; color: #444; font-weight: bold; text-align: center; transition: 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .comfort-link:hover { transform: translateY(-3px); color: var(--primary-color); }
+        
+        #lofi-btn.playing { background: #ff7675; color: white; animation: pulse 2s infinite; }
 
         /* --- NOTES & SETTINGS --- */
         .subject-folder { background: rgba(255,255,255,0.4); margin-bottom: 10px; border-radius: 10px; overflow: hidden; }
         .subject-header { padding: 15px; background: rgba(255,255,255,0.6); cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
         .subject-content { display: none; padding: 15px; }
-        .note-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; margin-bottom: 5px; border-radius: 5px; }
-        
+        .note-item { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; margin-bottom: 5px; border-radius: 5px; word-break: break-word;}
+        .file-tag { font-size: 0.8rem; background: #e056fd; color: white; padding: 2px 6px; border-radius: 4px; margin-left: 5px; text-decoration: none; cursor: pointer; display: inline-block; margin-top: 5px;}
+
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 5000; align-items: center; justify-content: center; }
         .modal-content { background: white; padding: 30px; border-radius: 15px; width: 300px; text-align: center; }
 
-        /* General UI */
         ul { list-style: none; padding: 0; }
         li { background: rgba(255,255,255,0.6); margin: 8px 0; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; cursor: pointer; }
         li.checked { text-decoration: line-through; opacity: 0.6; }
-        .schedule-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
-        @media (max-width: 900px) { .schedule-container { grid-template-columns: repeat(2, 1fr); } }
-        .day-box { background: rgba(255,255,255,0.4); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; min-height: 100px; }
-        .day-input { width: 90%; height: 100%; background: rgba(255,255,255,0.5); border: none; border-radius: 10px; padding: 8px; outline: none; resize: none;}
+        .schedule-container { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; overflow-x: auto; padding-bottom: 10px;}
+        .day-box { background: rgba(255,255,255,0.4); border-radius: 15px; padding: 10px; display: flex; flex-direction: column; min-height: 100px; min-width: 100px; }
+        .day-input { width: 90%; height: 100%; background: rgba(255,255,255,0.5); border: none; border-radius: 10px; padding: 8px; outline: none; resize: none; font-family: inherit;}
     </style>
 </head>
 <body>
@@ -126,13 +137,12 @@
     </div>
 
     <div id="app-container">
-        
         <nav class="sidebar">
             <div class="nav-group">
                 <button class="nav-btn active" onclick="showSection('home')" data-tooltip="Home"><i class="fas fa-home"></i></button>
                 <button class="nav-btn" onclick="showSection('planner')" data-tooltip="Planner"><i class="fas fa-calendar-alt"></i></button>
                 <button class="nav-btn" onclick="showSection('diary')" data-tooltip="My Diary"><i class="fas fa-book-open"></i></button>
-                <button class="nav-btn" onclick="showSection('notes')" data-tooltip="Study Notes"><i class="fas fa-folder-open"></i></button>
+                <button class="nav-btn" onclick="showSection('notes')" data-tooltip="Study Binder"><i class="fas fa-folder-open"></i></button>
                 <button class="nav-btn" onclick="showSection('ai-assist')" data-tooltip="AI Helper"><i class="fas fa-robot"></i></button>
                 <button class="nav-btn" onclick="showSection('decider')" data-tooltip="Fun"><i class="fas fa-gamepad"></i></button>
                 <button class="nav-btn" onclick="showSection('comfort')" data-tooltip="Comfort"><i class="fas fa-heart"></i></button>
@@ -144,7 +154,6 @@
         </nav>
 
         <div class="content">
-            
             <div id="home" class="section active">
                 <div class="card">
                     <h1 style="margin-top:0;">Welcome Back, Dula ✨</h1>
@@ -178,6 +187,7 @@
                 </div>
                 <div class="card">
                     <h2>📅 Weekly Schedule</h2>
+                    <p style="font-size:0.8rem; color:#666; margin-top:-10px; margin-bottom:10px;">Type in the boxes, it saves automatically!</p>
                     <div class="schedule-container">
                         <div class="day-box"><strong>Mon</strong><textarea class="day-input" id="day-0"></textarea></div>
                         <div class="day-box"><strong>Tue</strong><textarea class="day-input" id="day-1"></textarea></div>
@@ -197,13 +207,13 @@
                     <input type="text" id="diary-img-url" placeholder="Paste an image link here (optional)..." style="width:100%; margin-top:10px; padding:10px; border-radius:10px; border:none; box-sizing: border-box;">
                     <button onclick="saveDiaryEntry()" style="margin-top:10px; width:100%; padding:10px; background:var(--accent-color); color:white; border:none; border-radius:10px; cursor:pointer; font-weight:bold;">Save Entry</button>
                 </div>
-                <div id="diary-entries">
-                    </div>
+                <div id="diary-entries"></div>
             </div>
 
             <div id="notes" class="section">
                 <div class="card">
                     <h2>📂 Study Binder</h2>
+                    <p style="font-size:0.8rem; color:#555;">Files save directly to app memory. (Max ~5MB per file)</p>
                     <div style="display:flex; gap:10px; margin-bottom:10px;">
                         <input type="text" id="new-subject" placeholder="New Subject (e.g., Physics)" style="flex:1; padding:10px; border-radius:10px; border:none;">
                         <button onclick="addSubject()" style="background:var(--primary-color); color:white; border:none; padding:10px 20px; border-radius:10px; cursor:pointer;">Create Folder</button>
@@ -215,7 +225,6 @@
             <div id="ai-assist" class="section">
                 <div class="card">
                     <h2>🤖 Study Genie (Gemini)</h2>
-                    <p style="font-size:0.9rem; color:#666;">I can answer your questions right here!</p>
                     <div class="chat-container">
                         <div class="chat-box" id="chat-box">
                             <div class="msg ai">Hello Dula! Ask me anything about your studies.</div>
@@ -238,6 +247,23 @@
                     <button onclick="spinWheel()" style="margin-top:20px; padding:12px 40px; border-radius:25px; border:none; background:white; cursor:pointer; font-weight:bold; box-shadow:0 5px 15px rgba(0,0,0,0.1); font-size:1.1rem;">Spin the Wheel</button>
                     <div id="wheel-result" style="margin-top:20px; font-weight:bold; font-size:1.5rem; color:var(--primary-color);"></div>
                 </div>
+                <div class="games-area">
+                    <div class="card" style="text-align:center;">
+                        <h3>🪨 Rock Paper Scissors</h3>
+                        <div style="margin:20px 0;">
+                            <button class="game-btn" onclick="playRPS('🪨')">🪨</button>
+                            <button class="game-btn" onclick="playRPS('📄')">📄</button>
+                            <button class="game-btn" onclick="playRPS('✂️')">✂️</button>
+                        </div>
+                        <div id="rps-result" style="font-weight:bold;">Choose to play!</div>
+                    </div>
+                    <div class="card" style="text-align:center;">
+                        <h3>❌ Tic Tac Toe ⭕</h3>
+                        <div class="ttt-grid" id="ttt-board"></div>
+                        <button onclick="resetTTT()" style="padding:5px 15px; border-radius:10px; border:none; background:#ff7675; color:white; cursor:pointer;">Reset Game</button>
+                        <div id="ttt-winner" style="margin-top:10px; font-weight:bold; color:var(--primary-color);">Turn: X</div>
+                    </div>
+                </div>
             </div>
 
             <div id="comfort" class="section">
@@ -245,10 +271,9 @@
                     <h2>🍵 Comfort Zone</h2>
                     <div style="display:flex; gap:10px; flex-wrap:wrap;">
                         <button onclick="startBreathing()" style="padding:15px; border:none; background:rgba(255,255,255,0.8); border-radius:10px; cursor:pointer; flex:1; font-weight:bold;">🌧️ Stressed (Breathe)</button>
-                        <button onclick="toggleLofi()" style="padding:15px; border:none; background:rgba(255,255,255,0.8); border-radius:10px; cursor:pointer; flex:1; font-weight:bold;">🎧 Tired (Lofi)</button>
+                        <button id="lofi-btn" onclick="toggleLofi()" style="padding:15px; border:none; background:rgba(255,255,255,0.8); border-radius:10px; cursor:pointer; flex:1; font-weight:bold;">🎧 Tired (Lofi)</button>
                     </div>
-                    <audio id="lofi-player" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf87a.mp3?filename=lofi-study-112191.mp3"></audio>
-                    
+                    <audio id="lofi-player" loop src="https://cdn.pixabay.com/download/audio/2022/05/05/audio_13b6329c3a.mp3?filename=lofi-chill-medium-version-11536.mp3"></audio>
                     <div class="comfort-grid">
                         <a href="https://paveldogreat.github.io/WebGL-Fluid-Simulation/" target="_blank" class="comfort-link">💧 Fluid Sim</a>
                         <a href="http://weavesilk.com/" target="_blank" class="comfort-link">🕸️ Weave Silk</a>
@@ -257,13 +282,12 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <div id="breathing-overlay">
         <button onclick="stopBreathing()" style="position:absolute; top:30px; right:30px; background:none; border:none; color:white; font-size:2rem; cursor:pointer;">&times;</button>
-        <div class="breathing-circle" id="breath-circle">Inhale</div>
+        <div class="breathing-circle" id="breath-circle">Meditation</div>
         <p id="breath-text" style="margin-top:20px; font-size:1.2rem;">Breathe in slowly...</p>
     </div>
 
@@ -282,20 +306,55 @@
     </div>
 
     <script>
-        // --- 1. CONFIGURATION ---
+        // --- CONFIG ---
         const API_KEY = " "; 
-
         if(!localStorage.getItem('herPassword')) localStorage.setItem('herPassword', '2004');
 
-        // --- 2. LOGIN & NAV ---
+        // --- SOUNDS ---
+        const sounds = {
+            click: new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=bubble-pop-28367.mp3'),
+            success: new Audio('https://cdn.pixabay.com/download/audio/2021/08/04/audio_0625c1539c.mp3?filename=success-1-6297.mp3'),
+            spin: new Audio('https://cdn.pixabay.com/download/audio/2022/03/10/audio_c2921a9a8d.mp3?filename=wheel-spin-28383.mp3'),
+            login: new Audio('https://cdn.pixabay.com/download/audio/2025/06/02/audio_f91dce208a.mp3?filename=new-notification-09-352705.mp3'),
+            breathe: new Audio('https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg') 
+        };
+        sounds.breathe.loop = true; sounds.breathe.volume = 0.6; 
+
+        function playSound(type) {
+            try {
+                const s = sounds[type];
+                if(s) {
+                    if(type !== 'breathe' && type !== 'spin') { s.currentTime = 0; }
+                    var playPromise = s.play();
+                    if (playPromise !== undefined) { playPromise.catch(e => console.log("Audio blocked.")); }
+                }
+            } catch(e) {}
+        }
+        function stopSound(type) { try { const s = sounds[type]; if(s) { s.pause(); s.currentTime = 0; } } catch(e) {} }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('button').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const action = btn.getAttribute('onclick');
+                    if(!action || (!action.includes('spinWheel') && !action.includes('checkLogin') && !action.includes('startBreathing'))) {
+                        playSound('click');
+                    }
+                });
+            });
+            initScheduleListeners();
+            resetTTT(); 
+            renderNotes(); // Load notes on start
+        });
+
+        // --- LOGIN & NAV ---
         function checkLogin() {
             if (document.getElementById('password-input').value === localStorage.getItem('herPassword')) {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
                 initApp();
+                playSound('login'); 
             } else {
-                const err = document.getElementById('login-error');
-                err.style.display = 'block';
+                document.getElementById('login-error').style.display = 'block';
             }
         }
         function logout() { location.reload(); }
@@ -308,7 +367,7 @@
         function openSettings() { document.getElementById('settings-modal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settings-modal').style.display = 'none'; }
         
-        // --- 3. DIARY ---
+        // --- DIARY ---
         function loadDiary() {
             const entries = JSON.parse(localStorage.getItem('herDiary')) || [];
             const container = document.getElementById('diary-entries');
@@ -336,6 +395,7 @@
             document.getElementById('diary-text').value = "";
             document.getElementById('diary-img-url').value = "";
             loadDiary();
+            playSound('success'); 
         }
         function deleteDiary(idx) {
             if(confirm("Delete this memory?")) {
@@ -346,51 +406,38 @@
             }
         }
 
-        // --- 4. AI GEMINI ---
+        // --- AI ---
         async function callGemini() {
             const input = document.getElementById('chat-input');
             const box = document.getElementById('chat-box');
             const userText = input.value;
             if (!userText) return;
-
             box.innerHTML += `<div class="msg user">${userText}</div>`;
             input.value = "";
             box.scrollTop = box.scrollHeight;
-            
             const loadingDiv = document.createElement('div');
             loadingDiv.className = 'msg ai';
             loadingDiv.innerText = "Thinking...";
             box.appendChild(loadingDiv);
-
-            if(!API_KEY || API_KEY.startsWith("PASTE")) {
-                loadingDiv.innerText = "Error: API Key is missing inside the code.";
-                return;
-            }
-
+            if(!API_KEY || API_KEY.startsWith("PASTE")) { loadingDiv.innerText = "Error: API Key missing."; return; }
             try {
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ contents: [{ parts: [{ text: userText }] }] })
                 });
-                
-                if(!response.ok) throw new Error("Network response was not ok");
-                
+                if(!response.ok) throw new Error("Network error");
                 const data = await response.json();
-                const aiText = data.candidates[0].content.parts[0].text;
-                const formattedText = aiText.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, "<br>");
-                loadingDiv.innerHTML = formattedText;
-                
-            } catch (error) {
-                loadingDiv.innerHTML = "Sorry, I couldn't connect.<br><br><small>If you are opening this file directly from your computer, some browsers block AI connections for safety. Try using a different browser or hosting it on GitHub.</small>";
-            }
+                loadingDiv.innerHTML = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, "<br>");
+                playSound('success'); 
+            } catch (error) { loadingDiv.innerHTML = "Connection Error."; }
             box.scrollTop = box.scrollHeight;
         }
 
-        // --- 5. BREATHING ---
+        // --- BREATHING ---
         let breathInterval;
         function startBreathing() {
             document.getElementById('breathing-overlay').style.display = 'flex';
+            playSound('breathe'); 
             const circle = document.getElementById('breath-circle');
             const text = document.getElementById('breath-text');
             circle.className = "breathing-circle";
@@ -409,74 +456,65 @@
         }
         function stopBreathing() {
             clearInterval(breathInterval);
+            stopSound('breathe'); 
             document.getElementById('breathing-overlay').style.display = 'none';
         }
 
-        // --- 6. WHEEL & OTHERS ---
+        // --- GAMES ---
         let currentDeg = 0;
         function spinWheel() {
+            playSound('spin'); 
             const wheel = document.getElementById('wheel');
             const resultBox = document.getElementById('wheel-result');
-            const spinAmount = Math.floor(Math.random() * 3000) + 3000; 
-            currentDeg += spinAmount;
+            currentDeg += Math.floor(Math.random() * 3000) + 3000; 
             wheel.style.transform = `rotate(${currentDeg}deg)`;
             resultBox.innerText = "Spinning...";
             setTimeout(() => {
+                stopSound('spin'); 
                 const actualDeg = currentDeg % 360;
-                let text = "";
-                if (actualDeg < 60) text = "Go for a Walk 💜"; 
-                else if (actualDeg < 120) text = "Study 20m 🟢";
-                else if (actualDeg < 180) text = "Take a Nap 🔵";
-                else if (actualDeg < 240) text = "Call a Friend ❤️";
-                else if (actualDeg < 300) text = "Eat a Snack 🧀";
-                else text = "Watch K-Drama 🌸";
+                let text = actualDeg < 60 ? "Go for a Walk 💜" : actualDeg < 120 ? "Study 20m 🟢" : actualDeg < 180 ? "Take a Nap 🔵" : actualDeg < 240 ? "Call a Friend ❤️" : actualDeg < 300 ? "Eat a Snack 🧀" : "Watch K-Drama 🌸";
                 resultBox.innerText = "✨ " + text;
+                playSound('success'); 
             }, 4000);
+        }
+        function playRPS(u) {
+            const c = ['🪨', '📄', '✂️'][Math.floor(Math.random() * 3)];
+            let r = u === c ? "Tie! 😐" : (u === '🪨' && c === '✂️') || (u === '📄' && c === '🪨') || (u === '✂️' && c === '📄') ? "Won! 🎉" : "Lost! 🤖";
+            if(r.includes("Won")) playSound('success');
+            document.getElementById('rps-result').innerHTML = `You: ${u} vs CPU: ${c}<br>${r}`;
+        }
+        let tttBoard = Array(9).fill(''), tttPlayer = 'X', tttActive = true;
+        function resetTTT() { tttBoard.fill(''); tttPlayer='X'; tttActive=true; document.getElementById('ttt-winner').innerText="Turn: X"; renderTTT(); }
+        function renderTTT() {
+            const g = document.getElementById('ttt-board'); g.innerHTML = "";
+            tttBoard.forEach((c, i) => {
+                const d = document.createElement('div'); d.className = 'ttt-cell'; d.innerText = c; d.style.color = c==='X'?'#5f27cd':'#ff7675';
+                d.onclick = () => { if(tttActive && !tttBoard[i]) { tttBoard[i]=tttPlayer; playSound('click'); checkTTTWin(); if(tttActive){tttPlayer=tttPlayer==='X'?'O':'X'; document.getElementById('ttt-winner').innerText=`Turn: ${tttPlayer}`;} renderTTT(); } };
+                g.appendChild(d);
+            });
+        }
+        function checkTTTWin() {
+            const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+            w.forEach(x => { if(tttBoard[x[0]] && tttBoard[x[0]] === tttBoard[x[1]] && tttBoard[x[0]] === tttBoard[x[2]]) { tttActive=false; document.getElementById('ttt-winner').innerText=`${tttPlayer} Wins! 🎉`; playSound('success'); } });
+            if(tttActive && !tttBoard.includes('')) { tttActive=false; document.getElementById('ttt-winner').innerText="Draw!"; }
         }
 
         // --- INIT & HELPERS ---
         function initApp() {
             setInterval(updateTime, 1000); updateTime();
-            loadDiary(); renderNotes();
+            loadDiary(); loadSchedule();
             if(localStorage.getItem('herTasks')) document.getElementById('taskList').innerHTML = localStorage.getItem('herTasks');
             
-            // --- DAILY QUOTE (FIXED) ---
-            const quotes = [
-                "Believe you can and you're halfway there.", 
-                "You are capable of amazing things.", 
-                "Don't watch the clock; do what it does. Keep going.",
-                "Your potential is endless.",
-                "Every day is a fresh start."
-            ];
+            const quotes = ["Believe you can.", "You are amazing.", "Keep going.", "Potential is endless.", "Fresh start."];
             document.getElementById('daily-quote').innerText = quotes[new Date().getDate() % quotes.length];
 
-            // --- WEATHER & TIP (FIXED) ---
             fetch('https://api.open-meteo.com/v1/forecast?latitude=6.9271&longitude=79.8612&current_weather=true')
                 .then(r=>r.json()).then(d=>{
-                    const temp = d.current_weather.temperature;
-                    const code = d.current_weather.weathercode;
-                    document.getElementById('temp').innerText = temp + "°C";
+                    const t = d.current_weather.temperature;
+                    document.getElementById('temp').innerText = t + "°C";
                     document.getElementById('weather-desc').innerText = "Colombo, SL";
-
-                    // Tip Logic
-                    let tip = "Have a beautiful day! ✨";
-                    let tipColor = "#666";
-                    let bg = "rgba(255,255,255,0.5)";
-
-                    if(code <= 3) { // Clear
-                         tip = "Don't forget your sunglasses! 😎";
-                         tipColor = "#e67e22"; bg = "rgba(255, 234, 167,0.5)";
-                    }
-                    else if(code >= 51) { // Rain
-                        tip = "Grab an umbrella! ☔";
-                        tipColor = "#2980b9"; bg = "rgba(129, 236, 236,0.5)";
-                    }
-                    
                     const tipBox = document.getElementById('weather-tip');
-                    tipBox.innerText = tip;
-                    tipBox.style.color = tipColor;
-                    tipBox.style.background = bg;
-                    tipBox.style.display = 'block';
+                    tipBox.innerText = "Have a beautiful day! ✨"; tipBox.style.display = 'block';
                 });
         }
         
@@ -486,52 +524,170 @@
             document.getElementById('clock-display').innerText = now.toLocaleTimeString();
             document.getElementById('date-display').innerText = now.toLocaleDateString(undefined, {weekday:'long', year:'numeric', month:'long', day:'numeric'});
             const diff = now - birthDate;
-            const years = Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
-            const days = Math.floor((diff % (365.25 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
-            document.getElementById('age-display').innerText = `${years} Years, ${days} Days`;
+            document.getElementById('age-display').innerText = `${Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000))} Years, ${Math.floor((diff % (365.25 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000))} Days`;
         }
 
-        // Notes Logic
+        // --- NOTES LOGIC (LOCALSTORAGE ONLY) ---
         let notesData = JSON.parse(localStorage.getItem('herNotes')) || {};
+        
         function renderNotes() {
             const container = document.getElementById('notes-container'); container.innerHTML = "";
             for (const subject in notesData) {
                 const folder = document.createElement('div'); folder.className = 'subject-folder';
-                folder.innerHTML = `<div class="subject-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'"><span><i class="fas fa-book"></i> ${subject}</span> <i class="fas fa-chevron-down"></i></div>`;
-                const content = document.createElement('div'); content.className = 'subject-content';
-                content.innerHTML = `<div style="margin-bottom:10px;"><input id="t-${subject}" placeholder="Topic" style="width:30%"><input id="l-${subject}" placeholder="Link" style="width:30%"><button onclick="addNote('${subject}')">Add</button></div>`;
+                folder.innerHTML = `
+                    <div class="subject-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'">
+                        <span><i class="fas fa-folder"></i> ${subject}</span> <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="subject-content">
+                        <div style="margin-bottom:10px; border-bottom:1px solid rgba(0,0,0,0.1); padding-bottom:10px;">
+                            <input id="t-${subject}" placeholder="Topic Name" style="width:30%; padding:5px; border-radius:5px; border:1px solid #ccc; margin-right:5px;">
+                            <input id="l-${subject}" placeholder="Link (Optional)" style="width:30%; padding:5px; border-radius:5px; border:1px solid #ccc; margin-right:5px;">
+                            <label for="f-${subject}" style="cursor:pointer; background:#eee; padding:6px 10px; border-radius:5px; font-size:0.8rem; margin-right:5px;">
+                                <i class="fas fa-paperclip"></i> Upload (Max 3MB)
+                            </label>
+                            <input type="file" id="f-${subject}" style="display:none;">
+                            <button onclick="addNote('${subject}')" style="background:var(--primary-color); color:white; border:none; padding:6px 15px; border-radius:5px; cursor:pointer;">Add</button>
+                        </div>
+                `;
+                const content = folder.querySelector('.subject-content');
                 notesData[subject].forEach((n, i) => {
-                    content.innerHTML += `<div class="note-item"><div><b>${n.topic}</b><br><a href="${n.link}" target="_blank">Open Link</a></div><button onclick="delNote('${subject}',${i})" style="color:red">&times;</button></div>`;
+                    let fileHTML = "";
+                    if(n.file) { // Check for DataURL
+                         fileHTML = `<a href="#" onclick="openStoredFile('${subject}', ${i}); return false;" class="file-tag"><i class="fas fa-file-download"></i> ${n.file.name}</a>`;
+                    }
+                    let linkHTML = n.link ? `<br><a href="${n.link}" target="_blank" style="font-size:0.8rem; color:var(--primary-color);">🔗 Open Link</a>` : "";
+                    content.innerHTML += `
+                        <div class="note-item">
+                            <div><b>${n.topic}</b> ${fileHTML} ${linkHTML}</div>
+                            <button onclick="delNote('${subject}',${i})" style="color:red; background:none; border:none; cursor:pointer;">&times;</button>
+                        </div>`;
                 });
-                folder.appendChild(content); container.appendChild(folder);
+                content.innerHTML += "</div>";
+                container.appendChild(folder);
             }
         }
-        function addSubject() { const n = document.getElementById('new-subject').value; if(n && !notesData[n]){ notesData[n]=[]; saveNotes(); } }
-        function addNote(sub) { const t=document.getElementById(`t-${sub}`).value, l=document.getElementById(`l-${sub}`).value; if(t&&l){ notesData[sub].push({topic:t, link:l}); saveNotes(); } }
-        function delNote(sub, i) { notesData[sub].splice(i,1); saveNotes(); }
-        function saveNotes() { localStorage.setItem('herNotes', JSON.stringify(notesData)); renderNotes(); }
 
-        // Task Logic
+        function addSubject() { const n = document.getElementById('new-subject').value; if(n && !notesData[n]){ notesData[n]=[]; localStorage.setItem('herNotes', JSON.stringify(notesData)); renderNotes(); playSound('success'); } }
+        
+        function addNote(sub) { 
+            const t = document.getElementById(`t-${sub}`).value; 
+            const l = document.getElementById(`l-${sub}`).value; 
+            const fInput = document.getElementById(`f-${sub}`);
+            const file = fInput.files[0];
+
+            if(!t) { alert("Please enter a topic name."); return; }
+
+            if(file) {
+                // Strict 3MB Limit to prevent crash
+                if(file.size > 3145728) {
+                    alert("File too big for local saving! Max limit is 3MB.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    notesData[sub].push({
+                        topic: t, 
+                        link: l,
+                        file: {
+                            name: file.name,
+                            type: file.type,
+                            data: e.target.result // Base64 string
+                        }
+                    });
+                    
+                    try {
+                        localStorage.setItem('herNotes', JSON.stringify(notesData));
+                        renderNotes();
+                        playSound('success');
+                    } catch(e) {
+                        alert("Storage Full! Browser limit reached. Delete old notes/files.");
+                        notesData[sub].pop(); // Undo the add
+                    }
+                };
+                reader.readAsDataURL(file);
+            } else {
+                notesData[sub].push({topic:t, link:l});
+                localStorage.setItem('herNotes', JSON.stringify(notesData));
+                renderNotes();
+                playSound('success');
+            }
+        }
+
+        function delNote(sub, i) { 
+            notesData[sub].splice(i,1); 
+            localStorage.setItem('herNotes', JSON.stringify(notesData)); 
+            renderNotes(); 
+        }
+
+        function openStoredFile(sub, index) {
+            const file = notesData[sub][index].file;
+            if(file.type.includes('image') || file.type.includes('pdf')) {
+                 const win = window.open();
+                 if(file.type.includes('image')) win.document.write(`<img src="${file.data}" style="max-width:100%">`);
+                 else win.document.write(`<iframe src="${file.data}" width="100%" height="100%" style="border:none;"></iframe>`);
+            } else {
+                 const a = document.createElement('a');
+                 a.href = file.data;
+                 a.download = file.name;
+                 a.click();
+            }
+        }
+
+        // --- TASKS & SCHEDULE ---
         function addTask() { 
             const v = document.getElementById('taskInput').value; 
             if(v) { 
                 document.getElementById('taskList').innerHTML += `<li>${v} <span onclick="this.parentElement.remove();saveTasks()" style="color:red;cursor:pointer;">&times;</span></li>`; 
                 saveTasks(); document.getElementById('taskInput').value=""; 
+                playSound('success');
             } 
         }
         function saveTasks(){ localStorage.setItem('herTasks', document.getElementById('taskList').innerHTML); }
-        function toggleLofi() { const a=document.getElementById('lofi-player'); a.paused?a.play():a.pause(); }
+        function initScheduleListeners() {
+            document.querySelectorAll('.day-input').forEach((textarea, index) => {
+                textarea.addEventListener('input', () => {
+                    const schedule = JSON.parse(localStorage.getItem('herSchedule')) || {};
+                    schedule[index] = textarea.value;
+                    localStorage.setItem('herSchedule', JSON.stringify(schedule));
+                });
+            });
+        }
+        function loadSchedule() {
+            const schedule = JSON.parse(localStorage.getItem('herSchedule')) || {};
+            for (let i = 0; i < 7; i++) { if (schedule[i]) document.getElementById(`day-${i}`).value = schedule[i]; }
+        }
+
+        // --- PLAYER ---
+        function toggleLofi() { 
+            const player = document.getElementById('lofi-player'); 
+            const btn = document.getElementById('lofi-btn');
+            if (player.paused) {
+                player.play().then(() => { btn.classList.add('playing'); btn.innerHTML = "⏸️ Playing..."; }).catch(e => { alert("Click page first."); });
+            } else {
+                player.pause(); btn.classList.remove('playing'); btn.innerHTML = "🎧 Tired (Lofi)";
+            }
+        }
         
-        // Settings & Backup
+        // --- SETTINGS ---
         function changePassword() { localStorage.setItem('herPassword', document.getElementById('new-pass').value); alert("Updated!"); }
         function downloadBackup() {
             const d = { t: localStorage.getItem('herTasks'), n: localStorage.getItem('herNotes'), d: localStorage.getItem('herDiary'), s: localStorage.getItem('herSchedule') };
-            const a = document.createElement('a'); a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(d)); a.download = "dula_backup.json"; a.click();
+            const blob = new Blob([JSON.stringify(d)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = "dula_backup.json";
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
         }
         function restoreBackup(input) {
-            const r = new FileReader(); r.onload = e => { const d = JSON.parse(e.target.result); if(d.t) localStorage.setItem('herTasks', d.t); if(d.n) localStorage.setItem('herNotes', d.n); if(d.d) localStorage.setItem('herDiary', d.d); if(d.s) localStorage.setItem('herSchedule', d.s); location.reload(); }; r.readAsText(input.files[0]);
+            const r = new FileReader(); r.onload = e => { 
+                const d = JSON.parse(e.target.result); 
+                if(d.t) localStorage.setItem('herTasks', d.t); 
+                if(d.n) localStorage.setItem('herNotes', d.n); 
+                if(d.d) localStorage.setItem('herDiary', d.d); 
+                if(d.s) localStorage.setItem('herSchedule', d.s);
+                location.reload(); 
+            }; r.readAsText(input.files[0]);
         }
     </script>
 </body>
-
 </html>
